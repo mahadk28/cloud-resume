@@ -58,3 +58,85 @@ resource "aws_s3_bucket_website_configuration" "resume" {
     key = "error.html"
   }
 }
+
+
+# OAC - gives CloudFront permission to read from our private S3 bucket
+# Without this CloudFront can't access the files since we blocked all public access
+resource "aws_cloudfront_origin_access_control" "resume" {
+  name                              = "resume-oac"
+  origin_access_control_origin_type = "s3"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
+}
+
+# CloudFront distribution - this is the actual CDN that serves your resume globally
+resource "aws_cloudfront_distribution" "resume" {
+  enabled             = true
+  default_root_object = "index.html"
+
+  # Where CloudFront pulls your files from - your S3 bucket
+  origin {
+    domain_name              = aws_s3_bucket.resume.bucket_regional_domain_name
+    origin_id                = "s3-resume"
+    origin_access_control_id = aws_cloudfront_origin_access_control.resume.id
+  }
+
+  # How CloudFront handles requests - cache settings
+  default_cache_behavior {
+    allowed_methods        = ["GET", "HEAD"]
+    cached_methods         = ["GET", "HEAD"]
+    target_origin_id       = "s3-resume"
+    viewer_protocol_policy = "redirect-to-https"
+
+    forwarded_values {
+      query_string = false
+      cookies {
+        forward = "none"
+      }
+    }
+  }
+
+  # Where CloudFront serves from - use all edge locations worldwide
+  price_class = "PriceClass_All"
+
+  restrictions {
+    geo_restriction {
+      restriction_type = "none"
+    }
+  }
+
+  # HTTPS certificate - CloudFront provides this for free
+  viewer_certificate {
+    cloudfront_default_certificate = true
+  }
+}
+
+# S3 bucket policy - only allows CloudFront to read files, nobody else
+resource "aws_s3_bucket_policy" "resume" {
+  bucket = aws_s3_bucket.resume.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "AllowCloudFrontAccess"
+        Effect = "Allow"
+        Principal = {
+          Service = "cloudfront.amazonaws.com"
+        }
+        Action   = "s3:GetObject"
+        Resource = "${aws_s3_bucket.resume.arn}/*"
+        Condition = {
+          StringEquals = {
+            "AWS:SourceArn" = aws_cloudfront_distribution.resume.arn
+          }
+        }
+      }
+    ]
+  })
+}
+
+# Output the CloudFront URL so we can visit it after applying
+output "cloudfront_url" {
+  value = "https://${aws_cloudfront_distribution.resume.domain_name}"
+}
