@@ -140,3 +140,24 @@ resource "aws_s3_bucket_policy" "resume" {
 output "cloudfront_url" {
   value = "https://${aws_cloudfront_distribution.resume.domain_name}"
 }
+
+# Automatically upload all files from the frontend folder to the S3 bucket
+resource "aws_s3_object" "frontend_files" {
+  for_each = fileset("${path.module}/../frontend", "**/*")
+
+  bucket = aws_s3_bucket.resume.id
+  # This sets the file path in S3 (e.g. index.html)
+  key    = each.value
+  # This is the local path to the file
+  source = "${path.module}/../frontend/${each.value}"
+
+  # Set the content type based on the file extension
+  content_type = lookup({
+    "html" = "text/html"
+    "css"  = "text/css"
+    "js"   = "application/javascript"
+    "png"  = "image/png"
+    "jpg"  = "image/jpeg"
+    "ico"  = "image/x-icon"
+  }, reverse(split(".", each.value))[0], "application/octet-stream")
+}

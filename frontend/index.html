@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mahad Khan — Resume</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #F7F5F0;
+      --ink: #1A1814;
+      --muted: #6B6860;
+      --accent: #2A5C45;
+      --accent-light: #EAF2ED;
+      --rule: #D8D4CC;
+      --mono: 'DM Mono', monospace;
+      --serif: 'DM Serif Display', serif;
+      --sans: 'DM Sans', sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 60px 20px;
+    }
+
+    .page {
+      max-width: 760px;
+      margin: 0 auto;
+      background: #fff;
+      border: 1px solid var(--rule);
+      padding: 56px 64px;
+      position: relative;
+    }
+
+    .page::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--accent);
+    }
+
+    /* Header */
+    header {
+      margin-bottom: 36px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    h1 {
+      font-family: var(--serif);
+      font-size: 42px;
+      font-weight: 400;
+      letter-spacing: -0.5px;
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    .contact {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 20px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .contact a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s;
+    }
+
+    .contact a:hover {
+      border-color: var(--accent);
+    }
+
+    /* Visitor counter */
+    .counter {
+      margin-top: 10px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .counter span {
+      background: var(--accent-light);
+      color: var(--accent);
+      padding: 2px 8px;
+      border-radius: 2px;
+      font-weight: 500;
+    }
+
+    /* Sections */
+    section {
+      margin-bottom: 32px;
+    }
+
+    .section-title {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--accent-light);
+    }
+
+    /* Education */
+    .entry {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2px 16px;
+      margin-bottom: 18px;
+    }
+
+    .entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .entry-title {
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .entry-sub {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .entry-date {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      text-align: right;
+      padding-top: 2px;
+      white-space: nowrap;
+    }
+
+    .badge {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 10px;
+      background: var(--accent-light);
+      color: var(--accent);
+      padding: 2px 8px;
+      border-radius: 2px;
+      margin-top: 4px;
+    }
+
+    /* Skills */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 8px 20px;
+      align-items: baseline;
+    }
+
+    .skill-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .skill-value {
+      font-size: 13px;
+      color: var(--ink);
+    }
+
+    /* Projects & Experience */
+    .item {
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .item:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+
+    .item-title {
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .item-company {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .tech-stack {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    ul {
+      padding-left: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    li {
+      font-size: 13px;
+      color: #3A3830;
+      line-height: 1.55;
+    }
+
+    li::marker {
+      color: var(--accent);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+
+    <header>
+      <h1>Mahad Khan</h1>
+      <div class="contact">
+        <a href="mailto:mahad.khan@ontariotechu.net">mahad.khan@ontariotechu.net</a>
+        <a href="https://linkedin.com/in/mahadakhan" target="_blank">linkedin.com/in/mahadakhan</a>
+        <a href="https://github.com/mahadk28" target="_blank">github.com/mahadk28</a>
+      </div>
+      <div class="counter">
+        Views: <span id="count">—</span>
+      </div>
+    </header>
+
+    <section>
+      <div class="section-title">Education</div>
+      <div class="entry">
+        <div>
+          <div class="entry-title">B.Eng. Software Engineering</div>
+          <div class="entry-sub">Ontario Tech University</div>
+          <div class="badge">🏆 Ontario Tech Hackathon Winner — Sponsored by Microsoft</div>
+        </div>
+        <div class="entry-date">Expected Spring 2028</div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title">Technical Skills</div>
+      <div class="skills-grid">
+        <span class="skill-label">Languages</span>
+        <span class="skill-value">Java, Python, C++, JavaScript (ES6+), SQL, HTML5, CSS3</span>
+        <span class="skill-label">Frameworks</span>
+        <span class="skill-value">React, Next.js, Flask, TailwindCSS, NumPy</span>
+        <span class="skill-label">DevOps & Cloud</span>
+        <span class="skill-value">AWS, Azure, Docker, Git/GitHub, Linux, Terraform</span>
+        <span class="skill-label">Tools</span>
+        <span class="skill-value">VS Code, Figma, Puter, monday.com</span>
+        <span class="skill-label">Protocols</span>
+        <span class="skill-value">REST APIs, JSON, WebSockets</span>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title">Projects</div>
+
+      <div class="item">
+        <div class="item-header">
+          <div>
+            <div class="item-title">SignToLearn — AI ASL Learning App</div>
+            <div class="item-company">Hackathon Winner @ HackHive</div>
+          </div>
+          <div class="badge">Winner</div>
+        </div>
+        <div class="tech-stack">Python · OpenCV · MediaPipe · TensorFlow · React · Flask · TailwindCSS</div>
+        <ul>
+          <li>Built an AI-powered ASL app using OpenCV and MediaPipe for real-time hand sign recognition</li>
+          <li>Achieved 90% accuracy in live ASL translation, enabling dynamic learner feedback</li>
+          <li>Created an interactive UI using React and TailwindCSS to guide users through practice sessions</li>
+        </ul>
+      </div>
+
+      <div class="item">
+        <div class="item-header">
+          <div>
+            <div class="item-title">ResuMate — AI Resume Reviewer</div>
+          </div>
+        </div>
+        <div class="tech-stack">React · Vite · Node.js · pdf.js · Docker · Puter · Zustand · TailwindCSS</div>
+        <ul>
+          <li>Developed a web app that parses PDF resumes and extracts structured data such as education and experience
+          </li>
+          <li>Integrated Puter AI APIs to analyze and provide tailored feedback on formatting, keywords, and
+            ATS-compatibility</li>
+          <li>Implemented file handling, storage, and retrieval using Puter's file system and key-value store</li>
+        </ul>
+      </div>
+
+    </section>
+
+    <section>
+      <div class="section-title">Experience</div>
+
+      <div class="item">
+        <div class="item-header">
+          <div>
+            <div class="item-title">Software Engineer Extern</div>
+            <div class="item-company">Outamation</div>
+          </div>
+        </div>
+        <div class="tech-stack">LlamaIndex · Tesseract · PaddleOCR · PyMuPDF · Mistral · Phi-2 · RAG</div>
+        <ul>
+          <li>Built modular AI pipelines to process 200+ page mortgage documents using OCR and RAG techniques</li>
+          <li>Developed a document retrieval system with LlamaIndex, enhancing precision through chunk tuning and
+            metadata filtering</li>
+          <li>Benchmarked OCR accuracy, RAG retrieval quality, and routing performance; authored technical report with
+            optimization strategies</li>
+        </ul>
+      </div>
+
+      <div class="item">
+        <div class="item-header">
+          <div>
+            <div class="item-title">Freelance Web Developer</div>
+            <div class="item-company">Self Employed</div>
+          </div>
+        </div>
+        <div class="tech-stack">React · TailwindCSS · Figma · Google Calendar API</div>
+        <ul>
+          <li>Built a full-stack website for a private medical clinic with online appointment booking functionality</li>
+          <li>Designed wireframes and prototypes in Figma before development, collaborating directly with clients</li>
+          <li>Integrated Google Calendar API to sync doctor availability in real time</li>
+          <li>Delivered responsive, mobile-friendly UI with automated email confirmations and admin dashboard</li>
+        </ul>
+      </div>
+
+    </section>
+
+  </div>
+
+  <script>
+    async function getVisitorCount() {
+      try {
+        const res = await fetch('YOUR_API_GATEWAY_URL');
+        const data = await res.json();
+        document.getElementById('count').textContent = data.count;
+      } catch (e) {
+        document.getElementById('count').textContent = '—';
+      }
+    }
+    getVisitorCount();
+  </script>
+</body>
+
+</html>
